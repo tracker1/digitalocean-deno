@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Account } from '../models/account.ts';
 
@@ -18,7 +18,7 @@ export class AccountService {
    */
   public getUserInformation(): Promise<Account> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/account`)
         .then(response => {
           // Return actual account instead of wrapped account

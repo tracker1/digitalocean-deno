@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import {
   Firewall,
@@ -64,7 +64,7 @@ export class FirewallService {
    */
   public createFirewall(firewall: Firewall): Promise<Firewall> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .post(`/firewalls`, firewall)
         .then(response => {
           // Return actual firewall instead of wrapped firewall
@@ -89,7 +89,7 @@ export class FirewallService {
    */
   public getExistingFirewall(firewallId: string): Promise<Firewall> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/firewalls/${firewallId}`)
         .then(response => {
           // Return actual firewall instead of wrapped firewall
@@ -114,7 +114,7 @@ export class FirewallService {
    */
   public getAllFirewalls(): Promise<Firewall[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/firewalls`)
         .then(response => {
           // Return actual firewalls instead of wrapped firewalls
@@ -185,7 +185,7 @@ export class FirewallService {
    */
   public updateFirewall(firewall: Firewall): Promise<Firewall> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .put(`/firewalls/${firewall.id}`, firewall)
         .then(response => {
           // Return actual firewall instead of wrapped firewall
@@ -210,7 +210,7 @@ export class FirewallService {
    */
   public deleteFirewall(firewallId: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/firewalls/${firewallId}`)
         .then(() => {
           resolve();
@@ -244,7 +244,7 @@ export class FirewallService {
       const request = {
         droplet_ids: dropletIds
       };
-      axios
+      request
         .post(`/firewalls/${firewallId}/droplets`, request)
         .then(() => {
           resolve();
@@ -278,7 +278,7 @@ export class FirewallService {
       const request = {
         droplet_ids: dropletIds
       };
-      axios
+      request
         .delete(`/firewalls/${firewallId}/droplets`, {
           data: request
         })
@@ -311,7 +311,7 @@ export class FirewallService {
       const request = {
         tags
       };
-      axios
+      request
         .post(`/firewalls/${firewallId}/tags`, request)
         .then(() => {
           resolve();
@@ -345,7 +345,7 @@ export class FirewallService {
       const request = {
         tags
       };
-      axios
+      request
         .delete(`/firewalls/${firewallId}/tags`, {
           data: request
         })
@@ -401,7 +401,7 @@ export class FirewallService {
         inbound_rules: inboundRules,
         outbound_rules: outboundRules
       };
-      axios
+      request
         .post(`/firewalls/${firewallId}/rules`, request)
         .then(() => {
           resolve();
@@ -455,7 +455,7 @@ export class FirewallService {
         inbound_rules: inboundRules,
         outbound_rules: outboundRules
       };
-      axios
+      request
         .delete(`/firewalls/${firewallId}/rules`, {
           data: request
         })

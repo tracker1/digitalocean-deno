@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Action, ActionRequest } from '../models/action.ts';
 
@@ -30,7 +30,7 @@ export class BlockStorageActionService {
       if (!this.attachActionIsValid(actionRequest)) {
         throw new Error('Required fields missing from Action Object');
       }
-      axios
+      request
         .post(`/volumes/${volumeId}/actions`, actionRequest)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -67,7 +67,7 @@ export class BlockStorageActionService {
       if (!this.attachActionByNameIsValid(actionRequest)) {
         throw new Error('Required fields missing from Action Object');
       }
-      axios
+      request
         .post(`/volumes/actions`, actionRequest)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -104,7 +104,7 @@ export class BlockStorageActionService {
       if (!this.attachActionIsValid(actionRequest)) {
         throw new Error('Required fields missing from Action Object');
       }
-      axios
+      request
         .post(`/volumes/${volumeId}/actions`, actionRequest)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -141,7 +141,7 @@ export class BlockStorageActionService {
       if (!this.attachActionByNameIsValid(actionRequest)) {
         throw new Error('Required fields missing from Action Object');
       }
-      axios
+      request
         .post(`/volumes/actions`, actionRequest)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -178,7 +178,7 @@ export class BlockStorageActionService {
       if (!this.resizeActionIsValid(actionRequest)) {
         throw new Error('Required fields missing from Action Object');
       }
-      axios
+      request
         .post(`/volumes/${volumeId}/actions`, actionRequest)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -216,7 +216,7 @@ export class BlockStorageActionService {
       let url = `/volumes/${volumeId}/actions`;
       url += `?page=${page}`;
       url += `&per_page=${perPage}`;
-      axios
+      request
         .get(url)
         .then(response => {
           // Return actual actions instead of wrapped actions
@@ -245,7 +245,7 @@ export class BlockStorageActionService {
     actionId: number
   ): Promise<Action> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/volumes/${volumeId}/actions/${actionId}`)
         .then(response => {
           // Return actual action instead of wrapped action

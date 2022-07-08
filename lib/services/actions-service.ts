@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Action } from '../models/action.ts';
 
@@ -26,7 +26,7 @@ export class ActionService {
       let url = `/actions`;
       url += `?page=${page}`;
       url += `&per_page=${perPage}`;
-      axios
+      request
         .get(url)
         .then(response => {
           // Return actual actions instead of wrapped actions
@@ -52,7 +52,7 @@ export class ActionService {
   public getExistingAction(id: number): Promise<Action> {
     return new Promise((resolve, reject) => {
       const url = `/actions/${id}`;
-      axios
+      request
         .get(url)
         .then(response => {
           // Return actual action instead of wrapped action

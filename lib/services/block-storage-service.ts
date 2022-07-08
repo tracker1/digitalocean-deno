@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { BlockStorage, BlockStorageRequest } from '../models/block-storage.ts';
 import { Snapshot } from '../models/snapshot.ts';
@@ -19,7 +19,7 @@ export class BlockStorageService {
    */
   public getAllBlockStorage(): Promise<BlockStorage[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/volumes`)
         .then(response => {
           // Return actual volumes instead of wrapped volumes
@@ -55,7 +55,7 @@ export class BlockStorageService {
       if (!this.volumeIsValid(volume)) {
         throw new Error('Required fields missing from Block Storage Object');
       }
-      axios
+      request
         .post(`/volumes`, volume)
         .then(response => {
           // Return actual volume instead of wrapped volume
@@ -80,7 +80,7 @@ export class BlockStorageService {
    */
   public getBlockStorageById(id: string): Promise<BlockStorage> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/volumes/${id}`)
         .then(response => {
           // Return actual volume instead of wrapped volume
@@ -109,7 +109,7 @@ export class BlockStorageService {
     regionSlug: string
   ): Promise<BlockStorage[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/volumes?name=${name}&region=${regionSlug}`)
         .then(response => {
           // Return actual volumes instead of wrapped volumes
@@ -135,7 +135,7 @@ export class BlockStorageService {
    */
   public getSnapshotsForVolume(id: string): Promise<Snapshot[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/volumes/${id}/snapshots`)
         .then(response => {
           // Return actual snapshots instead of wrapped snapshots
@@ -161,7 +161,7 @@ export class BlockStorageService {
    */
   public createSnapshotFromVolume(id: string, name: string): Promise<Snapshot> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .post(`/volumes/${id}/snapshots`, { name })
         .then(response => {
           // Return actual snapshot instead of wrapped snapshot
@@ -186,7 +186,7 @@ export class BlockStorageService {
    */
   public deleteBlockStorageById(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/volumes/${id}`)
         .then(() => {
           resolve();
@@ -213,7 +213,7 @@ export class BlockStorageService {
     regionSlug: string
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/volumes?name=${name}&region=${regionSlug}`)
         .then(() => {
           resolve();

@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Tag } from '../models/tag.ts';
 
@@ -17,17 +17,7 @@ export class TagService {
    * ```
    */
   public createTag(name: string): Promise<Tag> {
-    return new Promise((resolve, reject) => {
-      axios
-        .post(`/tags`, { name })
-        .then(response => {
-          // Return actual tag instead of wrapped tag
-          resolve(response.data.tag);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.post(`/tags`, { name }).then(response => response.data.tag);
   }
 
   /**
@@ -42,17 +32,7 @@ export class TagService {
    * ```
    */
   public getTags(): Promise<Tag> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/tags`)
-        .then(response => {
-          // Return actual tags instead of wrapped tags
-          resolve(response.data.tags);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/tags`).then(response => response.data.tags);
   }
 
   /**
@@ -67,17 +47,7 @@ export class TagService {
    * ```
    */
   public getTagByName(tagName: string): Promise<Tag> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/tags/${tagName}`)
-        .then(response => {
-          // Return actual tag instead of wrapped tag
-          resolve(response.data.tag);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/tags/${tagName}`).then(response => response.data.tag);
   }
 
   /**
@@ -96,23 +66,15 @@ export class TagService {
    * await client.tags.tagResources('tag-name', resources);
    * ```
    */
-  public tagResources(tagName: string, resourceIds: string[]): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const resources = resourceIds.map(id => {
-        return {
-          resource_id: id,
-          resource_type: 'droplet'
-        };
-      });
-      axios
-        .post(`/tags/${tagName}/resources`, { resources })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async tagResources(
+    tagName: string,
+    resourceIds: string[]
+  ): Promise<void> {
+    const resources = resourceIds.map(id => ({
+      resource_id: id,
+      resource_type: 'droplet'
+    }));
+    await request.post(`/tags/${tagName}/resources`, { resources });
   }
 
   /**
@@ -131,27 +93,16 @@ export class TagService {
    * await client.tags.removeTagFromResources('tag-name', resources);
    * ```
    */
-  public removeTagFromResources(
+  public async removeTagFromResources(
     tagName: string,
     resourceIds: string[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const resources = resourceIds.map(id => {
-        return {
-          resource_id: id,
-          resource_type: 'droplet'
-        };
-      });
-      axios
-        .delete(`/tags/${tagName}/resources`, {
-          data: { resources }
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+    const resources = resourceIds.map(id => ({
+      resource_id: id,
+      resource_type: 'droplet'
+    }));
+    await request.delete(`/tags/${tagName}/resources`, {
+      data: { resources }
     });
   }
 
@@ -167,15 +118,6 @@ export class TagService {
    * ```
    */
   public deleteTag(tagName: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete(`/tags/${tagName}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.delete(`/tags/${tagName}`);
   }
 }

@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { DomainRecord, DomainRecordRequest } from '../models/domain-record.ts';
 
@@ -18,7 +18,7 @@ export class DomainRecordService {
    */
   public getAllDomainRecords(domainName: string): Promise<DomainRecord[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/domains/${domainName}/records`)
         .then(response => {
           // Return actual domain_records instead of wrapped domain_records
@@ -58,7 +58,7 @@ export class DomainRecordService {
     domainRequest: DomainRecordRequest
   ): Promise<DomainRecord> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .post(`/domains/${domainName}/records`, domainRequest)
         .then(response => {
           // Return actual domain_record instead of wrapped domain_record
@@ -87,7 +87,7 @@ export class DomainRecordService {
     recordId: number
   ): Promise<DomainRecord> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/domains/${domainName}/records/${recordId}`)
         .then(response => {
           // Return actual domain_record instead of wrapped domain_record
@@ -121,7 +121,7 @@ export class DomainRecordService {
     domainRequest: DomainRecordRequest
   ): Promise<DomainRecord> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .put(`/domains/${domainName}/records/${recordId}`, domainRequest)
         .then(response => {
           // Return actual domain_record instead of wrapped domain_record
@@ -149,7 +149,7 @@ export class DomainRecordService {
     recordId: number
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/domains/${domainName}/records/${recordId}`)
         .then(() => {
           // Return actual domain_record instead of wrapped domain_record

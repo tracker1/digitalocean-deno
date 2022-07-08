@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { CdnEndpoint, CdnEndpointRequest } from '../models/cdn.ts';
 
@@ -18,7 +18,7 @@ export class CdnService {
    */
   public getAllEndpoints(): Promise<CdnEndpoint[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/cdn/endpoints`)
         .then(response => {
           // Return actual endpoints instead of wrapped endpoints
@@ -43,7 +43,7 @@ export class CdnService {
    */
   public getExistingEndpoint(id: string): Promise<CdnEndpoint> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/cdn/endpoints/${id}`)
         .then(response => {
           // Return actual endpoint instead of wrapped endpoint
@@ -75,7 +75,7 @@ export class CdnService {
       if (!this.endpointIsValid(endpoint)) {
         throw new Error('Required fields missing from Endpoint Object');
       }
-      axios
+      request
         .post(`/cdn/endpoints`, endpoint)
         .then(response => {
           // Return actual endpoint instead of wrapped endpoint
@@ -100,7 +100,7 @@ export class CdnService {
    */
   public updateEndpoint(id: string, ttl: number): Promise<CdnEndpoint> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .put(`/cdn/endpoints/${id}`, { ttl })
         .then(response => {
           // Return actual endpoint instead of wrapped endpoint
@@ -125,7 +125,7 @@ export class CdnService {
    */
   public deleteEndpoint(id: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/cdn/endpoints/${id}`)
         .then(() => {
           resolve();
@@ -153,7 +153,7 @@ export class CdnService {
    */
   public purgeEndpointCache(id: string, files: string[]): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/cdn/endpoints/${id}/cache`, {
           data: { files }
         })

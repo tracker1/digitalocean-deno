@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 import { Balance } from '../models/balance.ts';
 import { BillingHistory } from '../models/billing-history.ts';
 
@@ -18,7 +18,7 @@ export class BillingHistoryService {
    */
   public getMyBalance(): Promise<Balance> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get('/customers/my/balance')
         .then(response => {
           // Return actual action instead of wrapped action
@@ -43,7 +43,7 @@ export class BillingHistoryService {
    */
   public getMyBillingHistory(): Promise<BillingHistory[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get('/customers/my/billing_history')
         .then(response => {
           // Return actual action instead of wrapped action

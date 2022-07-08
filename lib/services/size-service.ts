@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Size } from '../models/size.ts';
 
@@ -17,16 +17,6 @@ export class SizeService {
    * ```
    */
   public getAllSizes(): Promise<Size[]> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/sizes`)
-        .then(response => {
-          // Return actual sizes instead of wrapped sizes
-          resolve(response.data.sizes);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/sizes`).then(response => response.data.sizes);
   }
 }

@@ -1,4 +1,4 @@
-import { axios } from './axios-instance.ts';
+import { request } from './request-tool.ts';
 import { API_BASE_URL } from './conf/environment.ts';
 import { AccountService } from './services/account-service.ts';
 import { ActionService } from './services/actions-service.ts';
@@ -52,9 +52,8 @@ export class DigitalOcean {
   public tags: TagService;
 
   constructor(private token: string, url = API_BASE_URL) {
-    axios.defaults.headers.common.Authorization = `Bearer ${this.token}`;
-    axios.defaults.headers.common['Content-Type'] = `application/json`;
-    axios.defaults.baseURL = url;
+    request.baseUrl = url;
+    request.token = this.token;
 
     this.account = new AccountService();
     this.actions = new ActionService();

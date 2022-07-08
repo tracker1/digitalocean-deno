@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Snapshot } from '../models/snapshot.ts';
 
@@ -25,21 +25,11 @@ export class SnapshotService {
    * ```
    */
   public getSnapshots(resourceType?: SnapshotType): Promise<Snapshot[]> {
-    return new Promise((resolve, reject) => {
-      let url = `/snapshots`;
-      if (resourceType && resourceType !== 'all') {
-        url += `?resource_type=${resourceType}`;
-      }
-      axios
-        .get(url)
-        .then(response => {
-          // Return actual snapshots instead of wrapped snapshots
-          resolve(response.data.snapshots);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    let url = `/snapshots`;
+    if (resourceType && resourceType !== 'all') {
+      url += `?resource_type=${resourceType}`;
+    }
+    return request.get(url).then(response => response.data.snapshots);
   }
 
   /**
@@ -54,17 +44,9 @@ export class SnapshotService {
    * ```
    */
   public getSnapshotById(snapshotId: string): Promise<Snapshot> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/snapshots/${snapshotId}`)
-        .then(response => {
-          // Return actual snapshot instead of wrapped snapshot
-          resolve(response.data.snapshot);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/snapshots/${snapshotId}`)
+      .then(response => response.data.snapshot);
   }
 
   /**
@@ -78,17 +60,7 @@ export class SnapshotService {
    * await client.snapshots.deleteSnapshot('snapshot-id');
    * ```
    */
-  public deleteSnapshot(snapshotId: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete(`/snapshots/${snapshotId}`)
-        .then(() => {
-          // Return actual snapshot instead of wrapped snapshot
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async deleteSnapshot(snapshotId: string): Promise<void> {
+    await request.delete(`/snapshots/${snapshotId}`);
   }
 }

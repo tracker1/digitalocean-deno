@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { Action } from '../models/action.ts';
 
@@ -26,7 +26,7 @@ export class FloatingIPActionService {
         droplet_id: dropletId,
         type: 'assign'
       };
-      axios
+      request
         .post(`/floating_ips/${floatingIPAddress}/actions`, request)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -55,7 +55,7 @@ export class FloatingIPActionService {
       const request = {
         type: 'unassign'
       };
-      axios
+      request
         .post(`/floating_ips/${floatingIPAddress}/actions`, request)
         .then(response => {
           // Return actual action instead of wrapped action
@@ -81,7 +81,7 @@ export class FloatingIPActionService {
    */
   public getAllFloatingIPActions(floatingIPAddress: string): Promise<Action[]> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/floating_ips/${floatingIPAddress}/actions`)
         .then(response => {
           // Return actual actions instead of wrapped actions
@@ -110,7 +110,7 @@ export class FloatingIPActionService {
     actionId: string
   ): Promise<Action> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/floating_ips/${floatingIPAddress}/actions/${actionId}`)
         .then(response => {
           // Return actual action instead of wrapped action

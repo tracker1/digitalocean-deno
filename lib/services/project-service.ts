@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import {
   Project,
@@ -22,17 +22,7 @@ export class ProjectService {
    * ```
    */
   public getAllProjects(): Promise<Project[]> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/projects`)
-        .then(response => {
-          // Return actual projects instead of wrapped projects
-          resolve(response.data.projects);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/projects`).then(response => response.data.projects);
   }
 
   /**
@@ -47,17 +37,9 @@ export class ProjectService {
    * ```
    */
   public getExistingProject(id: string): Promise<Project> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/projects/${id}`)
-        .then(response => {
-          // Return actual project instead of wrapped project
-          resolve(response.data.project);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/projects/${id}`)
+      .then(response => response.data.project);
   }
 
   /**
@@ -92,26 +74,18 @@ export class ProjectService {
    * const project = await client.projects.createProject(request);
    * ```
    */
-  public createProject(project: Project): Promise<Project> {
-    return new Promise((resolve, reject) => {
-      if (!this.createProjectIsValid(project)) {
-        throw new Error('Required fields missing from the Project Object');
-      }
-      if (!this.purposeIsValid(project.purpose)) {
-        throw new Error(
-          'Project purpose is not one of the allowed values. Use a proper purpose value.'
-        );
-      }
-      axios
-        .post(`/projects`, project)
-        .then(response => {
-          // Return actual project instead of wrapped project
-          resolve(response.data.project);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async createProject(project: Project): Promise<Project> {
+    if (!this.createProjectIsValid(project)) {
+      throw new Error('Required fields missing from the Project Object');
+    }
+    if (!this.purposeIsValid(project.purpose)) {
+      throw new Error(
+        'Project purpose is not one of the allowed values. Use a proper purpose value.'
+      );
+    }
+    return await request
+      .post(`/projects`, project)
+      .then(response => response.data.project);
   }
 
   /**
@@ -132,26 +106,18 @@ export class ProjectService {
    * const project = await client.projects.updateProject('project-id', request);
    * ```
    */
-  public updateProject(id: string, project: Project): Promise<Project> {
-    return new Promise((resolve, reject) => {
-      if (!this.projectIsValid(project)) {
-        throw new Error('Required fields missing from the Project Object');
-      }
-      if (!this.purposeIsValid(project.purpose)) {
-        throw new Error(
-          'Project purpose is not one of the allowed values. Use a proper purpose value.'
-        );
-      }
-      axios
-        .put(`/projects/${id}`, project)
-        .then(response => {
-          // Return actual project instead of wrapped project
-          resolve(response.data.project);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async updateProject(id: string, project: Project): Promise<Project> {
+    if (!this.projectIsValid(project)) {
+      throw new Error('Required fields missing from the Project Object');
+    }
+    if (!this.purposeIsValid(project.purpose)) {
+      throw new Error(
+        'Project purpose is not one of the allowed values. Use a proper purpose value.'
+      );
+    }
+    return await request
+      .put(`/projects/${id}`, project)
+      .then(response => response.data.project);
   }
 
   /**
@@ -188,16 +154,7 @@ export class ProjectService {
    * ```
    */
   public async deleteProject(id: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete(`/projects/${id}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
+    await request.delete(`/projects/${id}`);
   }
 
   /**
@@ -212,17 +169,9 @@ export class ProjectService {
    * ```
    */
   public getProjectResources(id: string): Promise<ProjectResource[]> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/projects/${id}/resources`)
-        .then(response => {
-          // Return actual resources instead of wrapped resources
-          resolve(response.data.resources);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/projects/${id}/resources`)
+      .then(response => response.data.resources);
   }
 
   /**
@@ -263,17 +212,9 @@ export class ProjectService {
     id: string,
     resources: string[]
   ): Promise<ProjectResource[]> {
-    return new Promise((resolve, reject) => {
-      axios
-        .post(`/projects/${id}/resources`, { resources })
-        .then(response => {
-          // Return actual resources instead of wrapped resources
-          resolve(response.data.resources);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .post(`/projects/${id}/resources`, { resources })
+      .then(response => response.data.resources);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import {
   ForwardingRule,
@@ -8,6 +8,38 @@ import {
 
 export class LoadBalancerService {
   constructor() {}
+
+  ////////// Validation Methods //////////
+  private loadBalancerIsValid(lb: LoadBalancer): boolean {
+    if (
+      !lb.name ||
+      !lb.region ||
+      !lb.forwarding_rules ||
+      lb.forwarding_rules.length === 0
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  private forwardingRuleIsValid(rule: ForwardingRule): boolean {
+    if (
+      !rule.entry_protocol ||
+      !rule.entry_port ||
+      !rule.target_protocol ||
+      !rule.target_port
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  private healthCheckIsValid(check: HealthCheck): boolean {
+    if (!check.protocol || !check.port) {
+      return false;
+    }
+    return true;
+  }
 
   /**
    * Create a new Load Balancer
@@ -59,33 +91,31 @@ export class LoadBalancerService {
    * const loadBalancer = await client.loadBalancers.createLoadBalancer(lb);
    * ```
    */
-  public createLoadBalancer(loadBalancer: LoadBalancer): Promise<LoadBalancer> {
-    return new Promise((resolve, reject) => {
-      if (!this.loadBalancerIsValid(loadBalancer)) {
-        throw new Error('Required fields missing from Load Balancer Object');
-      }
-      loadBalancer.forwarding_rules.forEach(rule => {
-        if (!this.forwardingRuleIsValid(rule)) {
-          throw new Error(
-            'Required fields missing from Forwarding Rule Object'
-          );
-        }
-      });
-      if (loadBalancer.health_check) {
-        if (!this.healthCheckIsValid(loadBalancer.health_check)) {
-          throw new Error('Required fields missing from Health Check Object');
-        }
-      }
-      axios
-        .post(`/load_balancers`, loadBalancer)
-        .then(response => {
-          // Return actual load_balancer instead of wrapped load_balancer
-          resolve(response.data.load_balancer);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async createLoadBalancer(
+    loadBalancer: LoadBalancer
+  ): Promise<LoadBalancer> {
+    if (!this.loadBalancerIsValid(loadBalancer)) {
+      throw new Error('Required fields missing from Load Balancer Object');
+    }
+    if (
+      loadBalancer.forwarding_rules.find(
+        rule => !this.forwardingRuleIsValid(rule)
+      )
+    ) {
+      throw new Error('Required fields missing from Forwarding Rule Object');
+    }
+    if (
+      loadBalancer.health_check &&
+      !this.healthCheckIsValid(loadBalancer.health_check)
+    ) {
+      throw ;
+      new Error('Required fields missing from Health Check Object');
+    }
+    return request.post(`/load_balancers`, loadBalancer).then(
+      response =>
+        // Return actual load_balancer instead of wrapped load_balancer
+        response.data.load_balancer
+    );
   }
 
   /**
@@ -100,17 +130,11 @@ export class LoadBalancerService {
    * ```
    */
   public getExistingLoadBalancer(id: string): Promise<LoadBalancer> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/load_balancers/${id}`)
-        .then(response => {
-          // Return actual load_balancer instead of wrapped load_balancer
-          resolve(response.data.load_balancer);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/load_balancers/${id}`).then(
+      response =>
+        // Return actual load_balancer instead of wrapped load_balancer
+        response.data.load_balancer
+    );
   }
 
   /**
@@ -125,17 +149,9 @@ export class LoadBalancerService {
    * ```
    */
   public getAllLoadBalancers(): Promise<LoadBalancer[]> {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`/load_balancers`)
-        .then(response => {
-          // Return actual load_balancers instead of wrapped load_balancers
-          resolve(response.data.load_balancers);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/load_balancers`)
+      .then(response => response.data.load_balancers);
   }
 
   /**
@@ -189,33 +205,28 @@ export class LoadBalancerService {
    * const loadBalancer = await client.loadBalancers.updateLoadBalancer(lb);
    * ```
    */
-  public updateLoadBalancer(loadBalancer: LoadBalancer): Promise<LoadBalancer> {
-    return new Promise((resolve, reject) => {
-      if (!this.loadBalancerIsValid(loadBalancer)) {
-        throw new Error('Required fields missing from Load Balancer Object');
+  public async updateLoadBalancer(
+    loadBalancer: LoadBalancer
+  ): Promise<LoadBalancer> {
+    if (!this.loadBalancerIsValid(loadBalancer)) {
+      throw new Error('Required fields missing from Load Balancer Object');
+    }
+
+    if (
+      loadBalancer?.forwarding_rules?.find(
+        rule => !this.forwardingRuleIsValid(rule)
+      )
+    ) {
+      throw new Error('Required fields missing from Forwarding Rule Object');
+    }
+
+    if (loadBalancer.health_check) {
+      if (!this.healthCheckIsValid(loadBalancer.health_check)) {
+        throw new Error('Required fields missing from Health Check Object');
       }
-      loadBalancer.forwarding_rules.forEach(rule => {
-        if (!this.forwardingRuleIsValid(rule)) {
-          throw new Error(
-            'Required fields missing from Forwarding Rule Object'
-          );
-        }
-      });
-      if (loadBalancer.health_check) {
-        if (!this.healthCheckIsValid(loadBalancer.health_check)) {
-          throw new Error('Required fields missing from Health Check Object');
-        }
-      }
-      axios
-        .put(`/load_balancers/${loadBalancer.id}`, loadBalancer)
-        .then(response => {
-          // Return actual load_balancer instead of wrapped load_balancer
-          resolve(response.data.load_balancer);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    }
+    return request.put(`/load_balancers/${loadBalancer.id}`, loadBalancer)
+      .then(response => response.data.load_balancer);
   }
 
   /**
@@ -229,17 +240,8 @@ export class LoadBalancerService {
    * await client.loadBalancers.deleteLoadBalancer('load-balancer-id');
    * ```
    */
-  public deleteLoadBalancer(id: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete(`/load_balancers/${id}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async deleteLoadBalancer(id: string): Promise<void> {
+    await request.delete(`/load_balancers/${id}`);
   }
 
   /**
@@ -258,21 +260,12 @@ export class LoadBalancerService {
    * await client.loadBalancers.addDropletsToLoadBalancer(dropletIds);
    * ```
    */
-  public addDropletsToLoadBalancer(
+  public async addDropletsToLoadBalancer(
     id: string,
     dropletIds: number[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      axios
-        .post(`/load_balancers/${id}`, {
-          droplet_ids: dropletIds
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+    await request.post(`/load_balancers/${id}`, {
+      droplet_ids: dropletIds
     });
   }
 
@@ -292,21 +285,12 @@ export class LoadBalancerService {
    * await client.loadBalancers.removeDropletsFromLoadBalancer('load-balancer-id', dropletIds);
    * ```
    */
-  public removeDropletsFromLoadBalancer(
+  public async removeDropletsFromLoadBalancer(
     id: string,
     dropletIds: number[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      axios
-        .delete(`/load_balancers/${id}`, {
-          data: { droplet_ids: dropletIds }
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+    await request.delete(`/load_balancers/${id}`, {
+      data: { droplet_ids: dropletIds }
     });
   }
 
@@ -330,28 +314,17 @@ export class LoadBalancerService {
    *    .addForwardingRulesToLoadBalancer('load-balancer-id', rules);
    * ```
    */
-  public addForwardingRulesToLoadBalancer(
+  public async addForwardingRulesToLoadBalancer(
     id: string,
     rules: ForwardingRule[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      rules.forEach(rule => {
-        if (!this.forwardingRuleIsValid(rule)) {
-          throw new Error(
-            'Required fields missing from Forwarding Rule Object'
-          );
-        }
-      });
-      axios
-        .post(`/load_balancers/${id}/forwarding_rules`, {
-          forwarding_rules: rules
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+    if (rules.find(rule => !this.forwardingRuleIsValid(rule))) {
+      throw 
+        new Error('Required fields missing from Forwarding Rule Object')
+      
+    }
+    await request.post(`/load_balancers/${id}/forwarding_rules`, {
+      forwarding_rules: rules
     });
   }
 
@@ -375,60 +348,16 @@ export class LoadBalancerService {
    *    .removeForwardingRulesFromLoadBalancer('load-balancer-id', rules);
    * ```
    */
-  public removeForwardingRulesFromLoadBalancer(
+  public async removeForwardingRulesFromLoadBalancer(
     id: string,
     rules: ForwardingRule[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      rules.forEach(rule => {
-        if (!this.forwardingRuleIsValid(rule)) {
-          throw new Error(
-            'Required fields missing from Forwarding Rule Object'
-          );
-        }
-      });
-      axios
-        .delete(`/load_balancers/${id}/forwarding_rules`, {
-          data: { forwarding_rules: rules }
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+    if (rules.find(rule => !this.forwardingRuleIsValid(rule))) {
+      throw new Error('Required fields missing from Forwarding Rule Object');
+    }
+
+    await request.delete(`/load_balancers/${id}/forwarding_rules`, {
+      data: { forwarding_rules: rules }
     });
-  }
-
-  ////////// Validation Methods //////////
-  private loadBalancerIsValid(lb: LoadBalancer): boolean {
-    if (
-      !lb.name ||
-      !lb.region ||
-      !lb.forwarding_rules ||
-      lb.forwarding_rules.length === 0
-    ) {
-      return false;
-    }
-    return true;
-  }
-
-  private forwardingRuleIsValid(rule: ForwardingRule): boolean {
-    if (
-      !rule.entry_protocol ||
-      !rule.entry_port ||
-      !rule.target_protocol ||
-      !rule.target_port
-    ) {
-      return false;
-    }
-    return true;
-  }
-
-  private healthCheckIsValid(check: HealthCheck): boolean {
-    if (!check.protocol || !check.port) {
-      return false;
-    }
-    return true;
   }
 }

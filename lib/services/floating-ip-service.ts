@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance.ts';
+import { request } from '../request-tool.ts';
 
 import { FloatingIP } from '../models/floating-ip.ts';
 
@@ -18,7 +18,7 @@ export class FloatingIPService {
    */
   public getAllFloatingIPs(): Promise<FloatingIP> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/floating_ips`)
         .then(response => {
           // Return actual floating ips instead of wrapped floating ips
@@ -45,7 +45,7 @@ export class FloatingIPService {
   public createFloatingIPForDroplet(dropletId: string): Promise<FloatingIP> {
     return new Promise((resolve, reject) => {
       const request = { droplet_id: dropletId };
-      axios
+      request
         .post(`/floating_ips`, request)
         .then(response => {
           // Return actual floating ip instead of wrapped floating ip
@@ -71,7 +71,7 @@ export class FloatingIPService {
    */
   public createFloatingIPForRegion(region: string): Promise<FloatingIP> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .post(`/floating_ips`, { region })
         .then(response => {
           resolve(response.data.floating_ip);
@@ -96,7 +96,7 @@ export class FloatingIPService {
    */
   public getExistingFloatingIP(floatingIPAddress: string): Promise<FloatingIP> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .get(`/floating_ips/${floatingIPAddress}`)
         .then(response => {
           resolve(response.data.floating_ip);
@@ -120,7 +120,7 @@ export class FloatingIPService {
    */
   public deleteFloatingIP(floatingIPAddress: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      axios
+      request
         .delete(`/floating_ips/${floatingIPAddress}`)
         .then(() => {
           resolve();
