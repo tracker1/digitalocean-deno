@@ -47,7 +47,7 @@ export class FloatingIPActionService {
       type: 'unassign'
     };
     return request
-      .post(`/floating_ips/${floatingIPAddress}/actions`, redataquest)
+      .post(`/floating_ips/${floatingIPAddress}/actions`, data)
       .then(response => response.data.action);
   }
 
