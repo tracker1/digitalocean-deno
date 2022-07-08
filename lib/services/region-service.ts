@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Region } from '../models/region';
+import { Region } from '../models/region.ts';
 
 export class RegionService {
   constructor() {}

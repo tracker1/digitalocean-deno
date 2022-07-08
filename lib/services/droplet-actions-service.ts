@@ -1,7 +1,7 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Action } from '../models/action';
-import { DropletActionRequest } from '../models/droplet';
+import { Action } from '../models/action.ts';
+import { DropletActionRequest } from '../models/droplet.ts';
 
 export class DropletActionService {
   constructor() {}

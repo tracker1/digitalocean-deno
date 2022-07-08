@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { DomainRecord, DomainRecordRequest } from '../models/domain-record';
+import { DomainRecord, DomainRecordRequest } from '../models/domain-record.ts';
 
 export class DomainRecordService {
   constructor() {}

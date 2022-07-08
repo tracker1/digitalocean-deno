@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Tag } from '../models/tag';
+import { Tag } from '../models/tag.ts';
 
 export class TagService {
   constructor() {}

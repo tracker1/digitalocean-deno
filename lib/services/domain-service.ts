@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Domain, DomainRequest } from '../models/domain';
+import { Domain, DomainRequest } from '../models/domain.ts';
 
 export class DomainService {
   constructor() {}

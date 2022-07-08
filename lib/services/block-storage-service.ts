@@ -1,7 +1,7 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { BlockStorage, BlockStorageRequest } from '../models/block-storage';
-import { Snapshot } from '../models/snapshot';
+import { BlockStorage, BlockStorageRequest } from '../models/block-storage.ts';
+import { Snapshot } from '../models/snapshot.ts';
 
 export class BlockStorageService {
   constructor() {}

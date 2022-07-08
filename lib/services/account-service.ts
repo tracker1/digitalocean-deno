@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Account } from '../models/account';
+import { Account } from '../models/account.ts';
 
 export class AccountService {
   constructor() {}

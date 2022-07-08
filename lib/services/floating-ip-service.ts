@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { FloatingIP } from '../models/floating-ip';
+import { FloatingIP } from '../models/floating-ip.ts';
 
 export class FloatingIPService {
   constructor() {}

@@ -1,2 +1,2 @@
-export * from './lib/digitalocean';
-export * from './lib/models/index';
+export * from './lib/digitalocean.ts';
+export * from './lib/models/index.ts';

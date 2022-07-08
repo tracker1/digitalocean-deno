@@ -1,7 +1,7 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Action } from '../models/action';
-import { Image } from '../models/image';
+import { Action } from '../models/action.ts';
+import { Image } from '../models/image.ts';
 
 export class ImageService {
   constructor() {}

@@ -1,10 +1,10 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
 import {
   ForwardingRule,
   HealthCheck,
   LoadBalancer
-} from '../models/load-balancer';
+} from '../models/load-balancer.ts';
 
 export class LoadBalancerService {
   constructor() {}

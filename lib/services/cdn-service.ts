@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { CdnEndpoint, CdnEndpointRequest } from '../models/cdn';
+import { CdnEndpoint, CdnEndpointRequest } from '../models/cdn.ts';
 
 export class CdnService {
   constructor() {}

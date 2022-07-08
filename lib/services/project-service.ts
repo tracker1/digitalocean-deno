@@ -1,11 +1,11 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
 import {
   Project,
   ProjectPurpose,
   ProjectResource,
   ProjectResourceParsedUrn
-} from '../models/project';
+} from '../models/project.ts';
 
 export class ProjectService {
   constructor() {}

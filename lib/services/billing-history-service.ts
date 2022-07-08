@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
-import { Balance } from '../models/balance';
-import { BillingHistory } from '../models/billing-history';
+import { axios } from '../axios-instance.ts';
+import { Balance } from '../models/balance.ts';
+import { BillingHistory } from '../models/billing-history.ts';
 
 export class BillingHistoryService {
   constructor() {}

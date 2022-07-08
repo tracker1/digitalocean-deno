@@ -1,4 +1,4 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
 import {
   KubernetesCluster,
@@ -6,7 +6,7 @@ import {
   KubernetesOptions,
   KubernetesVersion,
   KubernetesWorkerNodePool
-} from '../models/kubernetes-cluster';
+} from '../models/kubernetes-cluster.ts';
 
 export class KubernetesService {
   constructor() {}

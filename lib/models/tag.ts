@@ -1,4 +1,4 @@
-import { Droplet } from './droplet';
+import { Droplet } from './droplet.ts';
 
 export interface Tag {
   name: string;

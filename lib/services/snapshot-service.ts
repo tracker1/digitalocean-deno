@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Snapshot } from '../models/snapshot';
+import { Snapshot } from '../models/snapshot.ts';
 
 export type SnapshotType = 'all' | 'droplet' | 'volume';
 

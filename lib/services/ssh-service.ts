@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { SshKey } from '../models/ssh-key';
+import { SshKey } from '../models/ssh-key.ts';
 
 export class SshService {
   constructor() {}

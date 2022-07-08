@@ -1,8 +1,8 @@
-import { Image } from './image';
-import { Kernel } from './kernel';
-import { Networks } from './networks';
-import { Region } from './region';
-import { Size } from './size';
+import { Image } from './image.ts';
+import { Kernel } from './kernel.ts';
+import { Networks } from './networks.ts';
+import { Region } from './region.ts';
+import { Size } from './size.ts';
 
 export interface Droplet {
   id: number;

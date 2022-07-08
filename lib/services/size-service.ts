@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Size } from '../models/size';
+import { Size } from '../models/size.ts';
 
 export class SizeService {
   constructor() {}

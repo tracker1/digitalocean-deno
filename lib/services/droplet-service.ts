@@ -1,10 +1,10 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Action } from '../models/action';
-import { Backup } from '../models/backup';
-import { Droplet, DropletRequest } from '../models/droplet';
-import { Kernel } from '../models/kernel';
-import { Snapshot } from '../models/snapshot';
+import { Action } from '../models/action.ts';
+import { Backup } from '../models/backup.ts';
+import { Droplet, DropletRequest } from '../models/droplet.ts';
+import { Kernel } from '../models/kernel.ts';
+import { Snapshot } from '../models/snapshot.ts';
 
 export class DropletService {
   constructor() {}

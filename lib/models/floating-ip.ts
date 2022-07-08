@@ -1,5 +1,5 @@
-import { Droplet } from './droplet';
-import { Region } from './region';
+import { Droplet } from './droplet.ts';
+import { Region } from './region.ts';
 
 export interface FloatingIP {
   ip: string;

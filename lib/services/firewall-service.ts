@@ -1,10 +1,10 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
 import {
   Firewall,
   FirewallInboundRule,
   FirewallOutboundRule
-} from '../models/firewall';
+} from '../models/firewall.ts';
 
 export class FirewallService {
   constructor() {}

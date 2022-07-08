@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Action } from '../models/action';
+import { Action } from '../models/action.ts';
 
 export class FloatingIPActionService {
   constructor() {}

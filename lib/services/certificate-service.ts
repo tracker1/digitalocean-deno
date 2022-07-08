@@ -1,6 +1,6 @@
-import { axios } from '../axios-instance';
+import { axios } from '../axios-instance.ts';
 
-import { Certificate, CertificateRequest } from '../models/certificate';
+import { Certificate, CertificateRequest } from '../models/certificate.ts';
 
 export class CertificateService {
   constructor() {}
