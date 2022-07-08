@@ -1,5 +1,3 @@
-![digitalocean-js](https://user-images.githubusercontent.com/5883616/126348407-dd1e694d-64a9-402e-b8df-f59e67686014.png)
-
 # DigitalOcean API client for Deno
 
 JavaScript library for the DigitalOcean API. For use in Deno.
