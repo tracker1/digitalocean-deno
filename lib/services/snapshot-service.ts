@@ -60,7 +60,7 @@ export class SnapshotService {
    * await client.snapshots.deleteSnapshot('snapshot-id');
    * ```
    */
-  public async deleteSnapshot(snapshotId: string): Promise<void> {
-    await request.delete(`/snapshots/${snapshotId}`);
+  public deleteSnapshot(snapshotId: string): Promise<void> {
+    return request.delete(`/snapshots/${snapshotId}`).then(() => undefined);
   }
 }

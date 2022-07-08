@@ -63,17 +63,9 @@ export class FirewallService {
    * ```
    */
   public createFirewall(firewall: Firewall): Promise<Firewall> {
-    return new Promise((resolve, reject) => {
-      request
-        .post(`/firewalls`, firewall)
-        .then(response => {
-          // Return actual firewall instead of wrapped firewall
-          resolve(response.data.firewall);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .post(`/firewalls`, firewall)
+      .then(response => response.data.firewall);
   }
 
   /**
@@ -88,17 +80,9 @@ export class FirewallService {
    * ```
    */
   public getExistingFirewall(firewallId: string): Promise<Firewall> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/firewalls/${firewallId}`)
-        .then(response => {
-          // Return actual firewall instead of wrapped firewall
-          resolve(response.data.firewall);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/firewalls/${firewallId}`)
+      .then(response => response.data.firewall);
   }
 
   /**
@@ -113,17 +97,7 @@ export class FirewallService {
    * ```
    */
   public getAllFirewalls(): Promise<Firewall[]> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/firewalls`)
-        .then(response => {
-          // Return actual firewalls instead of wrapped firewalls
-          resolve(response.data.firewalls);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/firewalls`).then(response => response.data.firewalls);
   }
 
   /**
@@ -184,17 +158,9 @@ export class FirewallService {
    * ```
    */
   public updateFirewall(firewall: Firewall): Promise<Firewall> {
-    return new Promise((resolve, reject) => {
-      request
-        .put(`/firewalls/${firewall.id}`, firewall)
-        .then(response => {
-          // Return actual firewall instead of wrapped firewall
-          resolve(response.data.firewall);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .put(`/firewalls/${firewall.id}`, firewall)
+      .then(response => response.data.firewall);
   }
 
   /**
@@ -209,16 +175,7 @@ export class FirewallService {
    * ```
    */
   public deleteFirewall(firewallId: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      request
-        .delete(`/firewalls/${firewallId}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.delete(`/firewalls/${firewallId}`).then(() => undefined);
   }
 
   /**
@@ -240,19 +197,12 @@ export class FirewallService {
     firewallId: string,
     dropletIds: number[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        droplet_ids: dropletIds
-      };
-      request
-        .post(`/firewalls/${firewallId}/droplets`, request)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      droplet_ids: dropletIds
+    };
+    return request
+      .post(`/firewalls/${firewallId}/droplets`, data)
+      .then(() => undefined);
   }
 
   /**
@@ -274,21 +224,12 @@ export class FirewallService {
     firewallId: string,
     dropletIds: number[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        droplet_ids: dropletIds
-      };
-      request
-        .delete(`/firewalls/${firewallId}/droplets`, {
-          data: request
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      droplet_ids: dropletIds
+    };
+    return request
+      .delete(`/firewalls/${firewallId}/droplets`, { data })
+      .then(() => undefined);
   }
 
   /**
@@ -307,19 +248,12 @@ export class FirewallService {
    * ```
    */
   public addTagsToFirewall(firewallId: string, tags: string[]): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        tags
-      };
-      request
-        .post(`/firewalls/${firewallId}/tags`, request)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      tags
+    };
+    return request
+      .post(`/firewalls/${firewallId}/tags`, data)
+      .then(() => undefined);
   }
 
   /**
@@ -341,21 +275,12 @@ export class FirewallService {
     firewallId: string,
     tags: string[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        tags
-      };
-      request
-        .delete(`/firewalls/${firewallId}/tags`, {
-          data: request
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      tags
+    };
+    return request
+      .delete(`/firewalls/${firewallId}/tags`, { data })
+      .then(() => undefined);
   }
 
   /**
@@ -396,20 +321,13 @@ export class FirewallService {
     inboundRules: FirewallInboundRule[],
     outboundRules: FirewallOutboundRule[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        inbound_rules: inboundRules,
-        outbound_rules: outboundRules
-      };
-      request
-        .post(`/firewalls/${firewallId}/rules`, request)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      inbound_rules: inboundRules,
+      outbound_rules: outboundRules
+    };
+    return request
+      .post(`/firewalls/${firewallId}/rules`, data)
+      .then(() => undefined);
   }
 
   /**
@@ -450,21 +368,12 @@ export class FirewallService {
     inboundRules: FirewallInboundRule[],
     outboundRules: FirewallOutboundRule[]
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        inbound_rules: inboundRules,
-        outbound_rules: outboundRules
-      };
-      request
-        .delete(`/firewalls/${firewallId}/rules`, {
-          data: request
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      inbound_rules: inboundRules,
+      outbound_rules: outboundRules
+    };
+    return request
+      .delete(`/firewalls/${firewallId}/rules`, { data })
+      .then(() => undefined);
   }
 }

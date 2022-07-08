@@ -21,21 +21,13 @@ export class FloatingIPActionService {
     floatingIPAddress: string,
     dropletId: string
   ): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        droplet_id: dropletId,
-        type: 'assign'
-      };
-      request
-        .post(`/floating_ips/${floatingIPAddress}/actions`, request)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      droplet_id: dropletId,
+      type: 'assign'
+    };
+    return request
+      .post(`/floating_ips/${floatingIPAddress}/actions`, data)
+      .then(response => response.data.action);
   }
 
   /**
@@ -51,20 +43,12 @@ export class FloatingIPActionService {
    * ```
    */
   public unassignFloatingIP(floatingIPAddress: string): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        type: 'unassign'
-      };
-      request
-        .post(`/floating_ips/${floatingIPAddress}/actions`, request)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      type: 'unassign'
+    };
+    return request
+      .post(`/floating_ips/${floatingIPAddress}/actions`, redataquest)
+      .then(response => response.data.action);
   }
 
   /**
@@ -80,17 +64,9 @@ export class FloatingIPActionService {
    * ```
    */
   public getAllFloatingIPActions(floatingIPAddress: string): Promise<Action[]> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/floating_ips/${floatingIPAddress}/actions`)
-        .then(response => {
-          // Return actual actions instead of wrapped actions
-          resolve(response.data.actions);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/floating_ips/${floatingIPAddress}/actions`)
+      .then(response => response.data.actions);
   }
 
   /**
@@ -109,16 +85,8 @@ export class FloatingIPActionService {
     floatingIPAddress: string,
     actionId: string
   ): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/floating_ips/${floatingIPAddress}/actions/${actionId}`)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/floating_ips/${floatingIPAddress}/actions/${actionId}`)
+      .then(response => response.data.action);
   }
 }

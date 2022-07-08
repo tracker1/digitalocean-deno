@@ -169,7 +169,7 @@ export class ImageService {
    * await client.images.deleteImage('image-id');
    * ```
    */
-  public async deleteImage(imageId: number): Promise<void> {
-    await request.delete(`/images/${imageId}`);
+  public deleteImage(imageId: number): Promise<void> {
+    return request.delete(`/images/${imageId}`).then(() => undefined);
   }
 }

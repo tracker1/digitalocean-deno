@@ -108,14 +108,11 @@ export class LoadBalancerService {
       loadBalancer.health_check &&
       !this.healthCheckIsValid(loadBalancer.health_check)
     ) {
-      throw ;
-      new Error('Required fields missing from Health Check Object');
+      throw new Error('Required fields missing from Health Check Object');
     }
-    return request.post(`/load_balancers`, loadBalancer).then(
-      response =>
-        // Return actual load_balancer instead of wrapped load_balancer
-        response.data.load_balancer
-    );
+    return await request
+      .post(`/load_balancers`, loadBalancer)
+      .then(response => response.data.load_balancer);
   }
 
   /**
@@ -130,11 +127,9 @@ export class LoadBalancerService {
    * ```
    */
   public getExistingLoadBalancer(id: string): Promise<LoadBalancer> {
-    return request.get(`/load_balancers/${id}`).then(
-      response =>
-        // Return actual load_balancer instead of wrapped load_balancer
-        response.data.load_balancer
-    );
+    return request
+      .get(`/load_balancers/${id}`)
+      .then(response => response.data.load_balancer);
   }
 
   /**
@@ -225,7 +220,8 @@ export class LoadBalancerService {
         throw new Error('Required fields missing from Health Check Object');
       }
     }
-    return request.put(`/load_balancers/${loadBalancer.id}`, loadBalancer)
+    return await request
+      .put(`/load_balancers/${loadBalancer.id}`, loadBalancer)
       .then(response => response.data.load_balancer);
   }
 
@@ -240,8 +236,8 @@ export class LoadBalancerService {
    * await client.loadBalancers.deleteLoadBalancer('load-balancer-id');
    * ```
    */
-  public async deleteLoadBalancer(id: string): Promise<void> {
-    await request.delete(`/load_balancers/${id}`);
+  public deleteLoadBalancer(id: string): Promise<void> {
+    return request.delete(`/load_balancers/${id}`).then(() => undefined);
   }
 
   /**
@@ -260,13 +256,15 @@ export class LoadBalancerService {
    * await client.loadBalancers.addDropletsToLoadBalancer(dropletIds);
    * ```
    */
-  public async addDropletsToLoadBalancer(
+  public addDropletsToLoadBalancer(
     id: string,
     dropletIds: number[]
   ): Promise<void> {
-    await request.post(`/load_balancers/${id}`, {
-      droplet_ids: dropletIds
-    });
+    return request
+      .post(`/load_balancers/${id}`, {
+        droplet_ids: dropletIds
+      })
+      .then(() => undefined);
   }
 
   /**
@@ -285,13 +283,15 @@ export class LoadBalancerService {
    * await client.loadBalancers.removeDropletsFromLoadBalancer('load-balancer-id', dropletIds);
    * ```
    */
-  public async removeDropletsFromLoadBalancer(
+  public removeDropletsFromLoadBalancer(
     id: string,
     dropletIds: number[]
   ): Promise<void> {
-    await request.delete(`/load_balancers/${id}`, {
-      data: { droplet_ids: dropletIds }
-    });
+    return request
+      .delete(`/load_balancers/${id}`, {
+        data: { droplet_ids: dropletIds }
+      })
+      .then(() => undefined);
   }
 
   /**
@@ -319,9 +319,7 @@ export class LoadBalancerService {
     rules: ForwardingRule[]
   ): Promise<void> {
     if (rules.find(rule => !this.forwardingRuleIsValid(rule))) {
-      throw 
-        new Error('Required fields missing from Forwarding Rule Object')
-      
+      throw new Error('Required fields missing from Forwarding Rule Object');
     }
     await request.post(`/load_balancers/${id}/forwarding_rules`, {
       forwarding_rules: rules

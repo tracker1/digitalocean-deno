@@ -49,11 +49,9 @@ export class KubernetesService {
   public createCluster(
     cluster: KubernetesClusterRequest
   ): Promise<KubernetesCluster> {
-    return request.post(`/kubernetes/clusters`, cluster).then(
-      response =>
-        // Return actual cluster instead of wrapped cluster
-        response.data.kubernetes_cluster
-    );
+    return request
+      .post(`/kubernetes/clusters`, cluster)
+      .then(response => response.data.kubernetes_cluster);
   }
 
   /**
@@ -68,11 +66,9 @@ export class KubernetesService {
    * ```
    */
   public getCluster(clusterId: string): Promise<KubernetesCluster> {
-    return request.get(`/kubernetes/clusters/${clusterId}`).then(
-      response =>
-        // Return actual cluster instead of wrapped cluster
-        response.data.kubernetes_cluster
-    );
+    return request
+      .get(`/kubernetes/clusters/${clusterId}`)
+      .then(response => response.data.kubernetes_cluster);
   }
 
   /**
@@ -87,11 +83,9 @@ export class KubernetesService {
    * ```
    */
   public getAllClusters(): Promise<KubernetesCluster[]> {
-    return request.get(`/kubernetes/clusters`).then(
-      response =>
-        // Return actual cluster instead of wrapped cluster
-        response.data.kubernetes_clusters
-    );
+    return request
+      .get(`/kubernetes/clusters`)
+      .then(response => response.data.kubernetes_clusters);
   }
 
   /**
@@ -116,11 +110,9 @@ export class KubernetesService {
     clusterId: string,
     cluster: KubernetesCluster
   ): Promise<KubernetesCluster> {
-    return request.put(`/kubernetes/clusters/${clusterId}`, cluster).then(
-      response =>
-        // Return actual cluster instead of wrapped cluster
-        response.data.kubernetes_cluster
-    );
+    return request
+      .put(`/kubernetes/clusters/${clusterId}`, cluster)
+      .then(response => response.data.kubernetes_cluster);
   }
 
   /**
@@ -137,11 +129,9 @@ export class KubernetesService {
   public getAvailableUpgradesForCluster(
     clusterId: string
   ): Promise<KubernetesVersion[]> {
-    return request.get(`/kubernetes/clusters/${clusterId}/upgrades`).then(
-      response =>
-        // Return actual versions instead of wrapped versions
-        response.data.available_upgrade_versions
-    );
+    return request
+      .get(`/kubernetes/clusters/${clusterId}/upgrades`)
+      .then(response => response.data.available_upgrade_versions);
   }
 
   /**
@@ -155,13 +145,15 @@ export class KubernetesService {
    * await client.kubernetes.upgradeExistingCluster('cluster-id', "1.12.3-do.1");
    * ```
    */
-  public async upgradeExistingCluster(
+  public upgradeExistingCluster(
     clusterId: string,
     version: string
   ): Promise<void> {
-    await request.post(`/kubernetes/clusters/${clusterId}/upgrade`, {
-      version
-    });
+    return request
+      .post(`/kubernetes/clusters/${clusterId}/upgrade`, {
+        version
+      })
+      .then(() => undefined);
   }
 
   /**
@@ -175,8 +167,10 @@ export class KubernetesService {
    * await client.kubernetes.deleteCluster('cluster-id');
    * ```
    */
-  public async deleteCluster(clusterId: string): Promise<void> {
-    await request.delete(`/kubernetes/clusters/${clusterId}`);
+  public deleteCluster(clusterId: string): Promise<void> {
+    return request
+      .delete(`/kubernetes/clusters/${clusterId}`)
+      .then(() => undefined);
   }
 
   /**
@@ -305,13 +299,13 @@ export class KubernetesService {
    * await client.kubernetes.deleteNodePoolFromCluster('cluster-id', 'pool-id');
    * ```
    */
-  public async deleteNodePoolFromCluster(
+  public deleteNodePoolFromCluster(
     clusterId: string,
     nodePoolId: string
   ): Promise<void> {
-    await request.delete(
-      `/kubernetes/clusters/${clusterId}/node_pools/${nodePoolId}`
-    );
+    return request
+      .delete(`/kubernetes/clusters/${clusterId}/node_pools/${nodePoolId}`)
+      .then(() => undefined);
   }
 
   /**
@@ -326,7 +320,7 @@ export class KubernetesService {
    * await client.kubernetes.deleteNodeFromNodePoolForCluster('cluster-id', 'pool-id', 'node-id', false, false);
    * ```
    */
-  public async deleteNodeFromNodePoolForCluster(
+  public deleteNodeFromNodePoolForCluster(
     clusterId: string,
     nodePoolId: string,
     nodeId: string,
@@ -336,7 +330,7 @@ export class KubernetesService {
     const url = `/kubernetes/clusters/${clusterId}/node_pools/${nodePoolId}/nodes/${nodeId}?skip_drain=${
       skipDrain ? 1 : 0
     }&replace=${replace ? 1 : 0}`;
-    await request.delete(url);
+    return request.delete(url).then(() => undefined);
   }
 
   /**

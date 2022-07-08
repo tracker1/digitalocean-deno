@@ -91,7 +91,9 @@ export class SshService {
    * await client.ssh.deleteKey('id-or-fingerprint');
    * ```
    */
-  public async deleteKey(idOrFingerprint: string): Promise<void> {
-    await request.delete(`/account/keys/${idOrFingerprint}`);
+  public deleteKey(idOrFingerprint: string): Promise<void> {
+    return request
+      .delete(`/account/keys/${idOrFingerprint}`)
+      .then(() => undefined);
   }
 }

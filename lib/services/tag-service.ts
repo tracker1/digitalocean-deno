@@ -66,15 +66,14 @@ export class TagService {
    * await client.tags.tagResources('tag-name', resources);
    * ```
    */
-  public async tagResources(
-    tagName: string,
-    resourceIds: string[]
-  ): Promise<void> {
+  public tagResources(tagName: string, resourceIds: string[]): Promise<void> {
     const resources = resourceIds.map(id => ({
       resource_id: id,
       resource_type: 'droplet'
     }));
-    await request.post(`/tags/${tagName}/resources`, { resources });
+    return request
+      .post(`/tags/${tagName}/resources`, { resources })
+      .then(() => undefined);
   }
 
   /**
@@ -93,7 +92,7 @@ export class TagService {
    * await client.tags.removeTagFromResources('tag-name', resources);
    * ```
    */
-  public async removeTagFromResources(
+  public removeTagFromResources(
     tagName: string,
     resourceIds: string[]
   ): Promise<void> {
@@ -101,9 +100,11 @@ export class TagService {
       resource_id: id,
       resource_type: 'droplet'
     }));
-    await request.delete(`/tags/${tagName}/resources`, {
-      data: { resources }
-    });
+    return request
+      .delete(`/tags/${tagName}/resources`, {
+        data: { resources }
+      })
+      .then(() => undefined);
   }
 
   /**
@@ -118,6 +119,6 @@ export class TagService {
    * ```
    */
   public deleteTag(tagName: string): Promise<void> {
-    return request.delete(`/tags/${tagName}`);
+    return request.delete(`/tags/${tagName}`).then(() => undefined);
   }
 }

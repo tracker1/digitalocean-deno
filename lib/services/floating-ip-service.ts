@@ -17,17 +17,9 @@ export class FloatingIPService {
    * ```
    */
   public getAllFloatingIPs(): Promise<FloatingIP> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/floating_ips`)
-        .then(response => {
-          // Return actual floating ips instead of wrapped floating ips
-          resolve(response.data.floating_ips);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/floating_ips`)
+      .then(response => response.data.floating_ips);
   }
 
   /**
@@ -43,18 +35,10 @@ export class FloatingIPService {
    * ```
    */
   public createFloatingIPForDroplet(dropletId: string): Promise<FloatingIP> {
-    return new Promise((resolve, reject) => {
-      const request = { droplet_id: dropletId };
-      request
-        .post(`/floating_ips`, request)
-        .then(response => {
-          // Return actual floating ip instead of wrapped floating ip
-          resolve(response.data.floating_ip);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = { droplet_id: dropletId };
+    return request
+      .post(`/floating_ips`, data)
+      .then(response => response.data.floating_ip);
   }
 
   /**
@@ -70,16 +54,9 @@ export class FloatingIPService {
    * ```
    */
   public createFloatingIPForRegion(region: string): Promise<FloatingIP> {
-    return new Promise((resolve, reject) => {
-      request
-        .post(`/floating_ips`, { region })
-        .then(response => {
-          resolve(response.data.floating_ip);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .post(`/floating_ips`, { region })
+      .then(response => response.data.floating_ip);
   }
 
   /**
@@ -95,16 +72,9 @@ export class FloatingIPService {
    * ```
    */
   public getExistingFloatingIP(floatingIPAddress: string): Promise<FloatingIP> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/floating_ips/${floatingIPAddress}`)
-        .then(response => {
-          resolve(response.data.floating_ip);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/floating_ips/${floatingIPAddress}`)
+      .then(response => response.data.floating_ip);
   }
 
   /**
@@ -119,15 +89,8 @@ export class FloatingIPService {
    * ```
    */
   public deleteFloatingIP(floatingIPAddress: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      request
-        .delete(`/floating_ips/${floatingIPAddress}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .delete(`/floating_ips/${floatingIPAddress}`)
+      .then(() => undefined);
   }
 }

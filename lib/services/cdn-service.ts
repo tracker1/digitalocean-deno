@@ -17,17 +17,9 @@ export class CdnService {
    * ```
    */
   public getAllEndpoints(): Promise<CdnEndpoint[]> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/cdn/endpoints`)
-        .then(response => {
-          // Return actual endpoints instead of wrapped endpoints
-          resolve(response.data.endpoints);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/cdn/endpoints`)
+      .then(response => response.data.endpoints);
   }
 
   /**
@@ -42,17 +34,9 @@ export class CdnService {
    * ```
    */
   public getExistingEndpoint(id: string): Promise<CdnEndpoint> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/cdn/endpoints/${id}`)
-        .then(response => {
-          // Return actual endpoint instead of wrapped endpoint
-          resolve(response.data.endpoint);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/cdn/endpoints/${id}`)
+      .then(response => response.data.endpoint);
   }
 
   /**
@@ -70,21 +54,15 @@ export class CdnService {
    * const endpoint = await client.cdn.createEndpoint(request);
    * ```
    */
-  public createEndpoint(endpoint: CdnEndpointRequest): Promise<CdnEndpoint> {
-    return new Promise((resolve, reject) => {
-      if (!this.endpointIsValid(endpoint)) {
-        throw new Error('Required fields missing from Endpoint Object');
-      }
-      request
-        .post(`/cdn/endpoints`, endpoint)
-        .then(response => {
-          // Return actual endpoint instead of wrapped endpoint
-          resolve(response.data.endpoint);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+  public async createEndpoint(
+    endpoint: CdnEndpointRequest
+  ): Promise<CdnEndpoint> {
+    if (!this.endpointIsValid(endpoint)) {
+      throw new Error('Required fields missing from Endpoint Object');
+    }
+    return await request
+      .post(`/cdn/endpoints`, endpoint)
+      .then(response => response.data.endpoint);
   }
 
   /**
@@ -99,17 +77,9 @@ export class CdnService {
    * ```
    */
   public updateEndpoint(id: string, ttl: number): Promise<CdnEndpoint> {
-    return new Promise((resolve, reject) => {
-      request
-        .put(`/cdn/endpoints/${id}`, { ttl })
-        .then(response => {
-          // Return actual endpoint instead of wrapped endpoint
-          resolve(response.data.endpoint);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .put(`/cdn/endpoints/${id}`, { ttl })
+      .then(response => response.data.endpoint);
   }
 
   /**
@@ -124,16 +94,7 @@ export class CdnService {
    * ```
    */
   public deleteEndpoint(id: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      request
-        .delete(`/cdn/endpoints/${id}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.delete(`/cdn/endpoints/${id}`).then(() => undefined);
   }
 
   /**
@@ -152,18 +113,11 @@ export class CdnService {
    * ```
    */
   public purgeEndpointCache(id: string, files: string[]): Promise<void> {
-    return new Promise((resolve, reject) => {
-      request
-        .delete(`/cdn/endpoints/${id}/cache`, {
-          data: { files }
-        })
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .delete(`/cdn/endpoints/${id}/cache`, {
+        data: { files }
+      })
+      .then(() => undefined);
   }
 
   ////////// Validation Methods //////////

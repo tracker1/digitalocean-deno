@@ -1,5 +1,18 @@
 {
   "compilerOptions": {
     "noImplicitAny": false
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "recommended"
+      ],
+      "include": [],
+      "exclude": [
+        "no-unused-vars",
+        "no-implicit-any",
+        "no-explicit-any"
+      ]
+    }
   }
 }

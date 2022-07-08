@@ -153,8 +153,8 @@ export class ProjectService {
    * await client.projects.deleteProject('project-id');
    * ```
    */
-  public async deleteProject(id: string): Promise<void> {
-    await request.delete(`/projects/${id}`);
+  public deleteProject(id: string): Promise<void> {
+    return request.delete(`/projects/${id}`).then(() => undefined);
   }
 
   /**

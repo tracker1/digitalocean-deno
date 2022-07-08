@@ -17,21 +17,13 @@ export class ImageActionService {
    * ```
    */
   public transferImage(imageId: number, region: string): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        region,
-        type: 'transfer'
-      };
-      request
-        .post(`/images/${imageId}/actions`, request)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      region,
+      type: 'transfer'
+    };
+    return request
+      .post(`/images/${imageId}/actions`, data)
+      .then(response => response.data.action);
   }
 
   /**
@@ -46,20 +38,12 @@ export class ImageActionService {
    * ```
    */
   public convertImageToSnapshot(imageId: number): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      const request = {
-        type: 'convert'
-      };
-      request
-        .post(`/images/${imageId}/actions`, request)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const data = {
+      type: 'convert'
+    };
+    return request
+      .post(`/images/${imageId}/actions`, data)
+      .then(response => response.data.action);
   }
 
   /**
@@ -77,16 +61,8 @@ export class ImageActionService {
     imageId: number,
     actionId: number
   ): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/images/${imageId}/actions/${actionId}`)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/images/${imageId}/actions/${actionId}`)
+      .then(response => response.data.action);
   }
 }

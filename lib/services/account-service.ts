@@ -17,16 +17,6 @@ export class AccountService {
    * ```
    */
   public getUserInformation(): Promise<Account> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/account`)
-        .then(response => {
-          // Return actual account instead of wrapped account
-          resolve(response.data.account);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/account`).then(response => response.data.account);
   }
 }

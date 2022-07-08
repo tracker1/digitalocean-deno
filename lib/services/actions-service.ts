@@ -20,22 +20,10 @@ export class ActionService {
    * ```
    */
   public getAllActions(perPage?: number, page?: number): Promise<Action[]> {
-    page = page ? page : 1;
-    perPage = perPage ? perPage : 25;
-    return new Promise((resolve, reject) => {
-      let url = `/actions`;
-      url += `?page=${page}`;
-      url += `&per_page=${perPage}`;
-      request
-        .get(url)
-        .then(response => {
-          // Return actual actions instead of wrapped actions
-          resolve(response.data.actions);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    page = page || 1;
+    perPage = perPage || 25;
+    const url = `/actions?page=${page}&per_page=${perPage}`;
+    return request.get(url).then(response => response.data.actions);
   }
 
   /**
@@ -50,17 +38,7 @@ export class ActionService {
    * ```
    */
   public getExistingAction(id: number): Promise<Action> {
-    return new Promise((resolve, reject) => {
-      const url = `/actions/${id}`;
-      request
-        .get(url)
-        .then(response => {
-          // Return actual action instead of wrapped action
-          resolve(response.data.action);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    const url = `/actions/${id}`;
+    return request.get(url).then(response => response.data.action);
   }
 }

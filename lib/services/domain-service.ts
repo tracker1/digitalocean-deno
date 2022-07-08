@@ -17,17 +17,7 @@ export class DomainService {
    * ```
    */
   public getAllDomains(): Promise<Domain[]> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/domains`)
-        .then(response => {
-          // Return actual domains instead of wrapped domains
-          resolve(response.data.domains);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.get(`/domains`).then(response => response.data.domains);
   }
 
   /**
@@ -46,17 +36,9 @@ export class DomainService {
    * ```
    */
   public createDomain(domainRequest: DomainRequest): Promise<Domain> {
-    return new Promise((resolve, reject) => {
-      request
-        .post(`/domains`, domainRequest)
-        .then(response => {
-          // Return actual domain instead of wrapped domain
-          resolve(response.data.domain);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .post(`/domains`, domainRequest)
+      .then(response => response.data.domain);
   }
 
   /**
@@ -71,17 +53,9 @@ export class DomainService {
    * ```
    */
   public getExistingDomain(domainName: string): Promise<Domain> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/domains/${domainName}`)
-        .then(response => {
-          // Return actual domain instead of wrapped domain
-          resolve(response.data.domain);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/domains/${domainName}`)
+      .then(response => response.data.domain);
   }
 
   /**
@@ -96,15 +70,6 @@ export class DomainService {
    * ```
    */
   public deleteDomain(domainName: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      request
-        .delete(`/domains/${domainName}`)
-        .then(() => {
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request.delete(`/domains/${domainName}`).then(() => undefined);
   }
 }

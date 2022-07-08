@@ -17,17 +17,9 @@ export class DomainRecordService {
    * ```
    */
   public getAllDomainRecords(domainName: string): Promise<DomainRecord[]> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/domains/${domainName}/records`)
-        .then(response => {
-          // Return actual domain_records instead of wrapped domain_records
-          resolve(response.data.domain_records);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/domains/${domainName}/records`)
+      .then(response => response.data.domain_records);
   }
 
   /**
@@ -57,17 +49,9 @@ export class DomainRecordService {
     domainName: string,
     domainRequest: DomainRecordRequest
   ): Promise<DomainRecord> {
-    return new Promise((resolve, reject) => {
-      request
-        .post(`/domains/${domainName}/records`, domainRequest)
-        .then(response => {
-          // Return actual domain_record instead of wrapped domain_record
-          resolve(response.data.domain_record);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .post(`/domains/${domainName}/records`, domainRequest)
+      .then(response => response.data.domain_record);
   }
 
   /**
@@ -86,17 +70,9 @@ export class DomainRecordService {
     domainName: string,
     recordId: number
   ): Promise<DomainRecord> {
-    return new Promise((resolve, reject) => {
-      request
-        .get(`/domains/${domainName}/records/${recordId}`)
-        .then(response => {
-          // Return actual domain_record instead of wrapped domain_record
-          resolve(response.data.domain_record);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .get(`/domains/${domainName}/records/${recordId}`)
+      .then(response => response.data.domain_record);
   }
 
   /**
@@ -120,17 +96,9 @@ export class DomainRecordService {
     recordId: number,
     domainRequest: DomainRecordRequest
   ): Promise<DomainRecord> {
-    return new Promise((resolve, reject) => {
-      request
-        .put(`/domains/${domainName}/records/${recordId}`, domainRequest)
-        .then(response => {
-          // Return actual domain_record instead of wrapped domain_record
-          resolve(response.data.domain_record);
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .put(`/domains/${domainName}/records/${recordId}`, domainRequest)
+      .then(response => response.data.domain_record);
   }
 
   /**
@@ -148,16 +116,8 @@ export class DomainRecordService {
     domainName: string,
     recordId: number
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
-      request
-        .delete(`/domains/${domainName}/records/${recordId}`)
-        .then(() => {
-          // Return actual domain_record instead of wrapped domain_record
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
-    });
+    return request
+      .delete(`/domains/${domainName}/records/${recordId}`)
+      .then(() => undefined);
   }
 }
