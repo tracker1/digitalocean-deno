@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import Axios from 'http://jspm.dev/axios';
 
 /**
  * Internal axios instance for configs local to library
