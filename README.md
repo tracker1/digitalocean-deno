@@ -1,5 +1,3 @@
-# WORK IN PROGRESS - Refactoring for Deno use in progress
-
 # DigitalOcean API client for Deno
 
 JavaScript library for the DigitalOcean API. For use in Deno.

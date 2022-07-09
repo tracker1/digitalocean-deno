@@ -1,4 +1,6 @@
 {
+  "name": "digitalocean-deno",
+  "version": "0.0.0",
   "compilerOptions": {
     "noImplicitAny": false
   },

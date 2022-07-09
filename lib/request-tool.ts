@@ -43,7 +43,7 @@ class RequestTool {
     let data: any = null;
     try {
       if (text) {
-        data = JSON.parse(data);
+        data = JSON.parse(text);
       }
     } catch (_) {
       // do nothing
